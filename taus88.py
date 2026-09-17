@@ -10,6 +10,8 @@ This module implements the generator exactly as it appears in the game's
 decompiled ``RandomGenerator::getInt`` (constants already folded by the
 compiler), plus a slow bit-level reference model built from the Boost
 parameters, so the two can be cross-checked.
+
+See README.md for the story and the math.
 """
 
 MASK32 = 0xFFFFFFFF
@@ -50,7 +52,10 @@ class Taus88:
 
 
 def _lfsr_step(value: int, k: int, q: int, s: int) -> int:
-    """One step of Boost's linear_feedback_shift_engine, bit by bit."""
+    """One step of Boost's linear_feedback_shift_engine, bit by bit.
+
+    ``w`` is 32; ``wordmask`` is all 32 low bits set.
+    """
     wordmask = MASK32
     b = (((value << q) ^ value) & wordmask) >> (k - s)
     mask = (wordmask << (32 - k)) & wordmask
